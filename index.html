@@ -56,17 +56,40 @@
                 
                 cell1.innerHTML = `<input type="radio" name="selectRow">`;
                 cell2.innerHTML = table.rows.length;
-                cell3.innerHTML = `<select name="option" style="width:90%;">
-                                    <option value="Montag">Text</option>
-                                    <option value="Dienstag">Text & Image</option>
-                                    <option value="Mittwoch">Image</option>
-                                    <option value="Donnerstag">VideoStream</option>
-                                    <option value="Freitag">3d Data</option>
+                cell3.innerHTML = `<select name="option" style="width:90%;" onchange="updateInputField(this, ${table.rows.length - 1})">
+                                    <option value="Text">Text</option>
+                                    <option value="Text & Image">Text & Image</option>
+                                    <option value="Image">Image</option>
+                                    <option value="VideoStream">VideoStream</option>
+                                    <option value="3d Data">3d Data</option>
                                 </select>`;
                 cell4.innerHTML = `<input type="text" placeholder="Text eingeben" style="width:90%;">`;
                 cell5.innerHTML = generateSkipSelect();
                 updateRowNumbers();
                 updateAllSkipSelects();
+            }
+            
+            function updateInputField(select, rowIndex) {
+                var option = select.value;
+                var inputCell = document.getElementById("myTableBody").rows[rowIndex].cells[3];
+                switch (option) {
+                    case "Text":
+                    case "VideoStream":
+                        inputCell.innerHTML = `<input type="text" placeholder="Text eingeben" style="width:90%;">`;
+                        break;
+                    case "Text & Image":
+                        inputCell.innerHTML = `<input type="text" placeholder="Text eingeben" style="width:90%;">
+                                            <input type="file" accept=".jpg" style="width:90%; margin-top: 5px;">`;
+                        break;
+                    case "Image":
+                        inputCell.innerHTML = `<input type="file" accept=".jpg" style="width:90%;">`;
+                        break;
+                    case "3d Data":
+                        inputCell.innerHTML = `<input type="file" accept=".obj, .gltf, .fbx" style="width:90%;">`;
+                        break;
+                    default:
+                        inputCell.innerHTML = '';
+                }
             }
             
             function deleteRow() {
